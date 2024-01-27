@@ -1,3 +1,59 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2a3eaee838f2f07ad79aa9f96cb3e9b33ea9fb326b7074ee1364e51d03363e59
-size 1138
+optim:
+  gradient_clip:
+    active: active
+    clip: 0.01
+  cls: AdamW
+  param:
+    lr: 3.0e-05
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-06
+    weight_decay: 0.01
+    amsgrad: false
+loss:
+  class_weight:
+    active: true
+seed: 1234
+device:
+  device: cuda
+  n_gpu: 8
+model:
+  bert:
+    name: roberta_base_ja_20190121_m10000_v24000_u500000
+train:
+  epoch: 10
+  batch_size: 400
+eval:
+  batch_size: 800
+data:
+  wikipedia:
+    debug_size: null
+    dir: ./dataset/jawiki-20190121-cirrussearch-content
+    add_dir: ./outputs/large_el_base_wikilink_extention/predicts/jawiki-20190121-cirrussearch-content
+    filter_no_link: false
+  ene:
+    path: ./dataset/Shinra2023_Classification_train_20230416.jsonl
+    add_path: ./outputs/ene_classifier/jawiki-20190121-cirrussearch-content/predict.jsonl
+  encoding: BIOUL
+  dev_size: 100
+  seq_len: 512
+  dup_len: 32
+dataloader:
+  num_workers: 8
+setting:
+  trainer:
+    cls: BaselineTrainer
+type:
+  dataset:
+    cls: NERCRFDataset
+  model:
+    cls: NERCRFModel
+    crf:
+      cls: PatialEERCRF
+      partial: true
+      add_se_tag: true
+    eer:
+      ratio: null
+      margin: 0.0
+      weight: 10

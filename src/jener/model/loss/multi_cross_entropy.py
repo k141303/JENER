@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2d6f44b3968992bf39940c351c06b7bb0774ae2dbb111ac90ad7ab953a568bef
-size 490
+import torch
+from torch import nn
+
+INF = 1e4
+
+
+class MultiLabelCELoss(nn.Module):
+    def forward(self, outputs, labels):
+        labels = labels.view(-1, labels.size(-1))
+        outputs = outputs.view(*labels.size())
+
+        is_active = labels.sum(dim=-1) > 0
+        labels = labels[is_active]
+        outputs = outputs[is_active]
+
+        mask = (1 - labels.float()) * -INF
+
+        loss = -torch.logsumexp(outputs + mask, -1) + torch.logsumexp(outputs, -1)
+        return loss.mean()

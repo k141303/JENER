@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4b8bce4ad593c9d7d553cb549dbfe548d2929493b5b0b309189cce297f0c25bb
-size 212
+device:
+  device: ???
+  n_gpu: ???
+eval:
+  batch_size: 400
+data:
+  wikinews:
+    path: ./dataset/wikinews_ene_v9_20240120.jsonl
+  ene_def:
+    path: ./dataset/ENE_Definition_v9.0.0-with-attributes-20220714.jsonl

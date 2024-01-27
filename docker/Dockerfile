@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6b963b94f206127a5b55444ac9065b2d62d855f24b4db1767012a2cad13365fe
-size 262
+FROM nvcr.io/nvidia/pytorch:22.11-py3
+LABEL maintainer=k141303
+
+RUN pip3 install --upgrade pip
+RUN pip3 install \
+    hydra-core==1.2.0 \
+    tqdm==4.64.1 \
+    transformers==4.22.1 \
+    liat_ml_roberta \
+    datasets==2.9.0 \
+    tensorboard \
+    torch_struct
