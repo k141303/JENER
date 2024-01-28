@@ -1,7 +1,8 @@
-hydra-core==1.2.0
-tqdm==4.64.1
+torch>=1.13.0
+hydra-core>=1.2.0
+tqdm>=4.64.1
 liat_ml_roberta
-datasets==2.9.0
+datasets>=2.9.0
 tensorboard
 torch_struct
-transformers==4.22.1
+transformers>=4.22.1
