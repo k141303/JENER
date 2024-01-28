@@ -2,6 +2,7 @@ import re
 import math
 import argparse
 import warnings
+import pkg_resources
 
 from collections import defaultdict
 
@@ -15,17 +16,15 @@ from .model import load_finetuned_model
 from .utils.array import slice, padding
 from .utils.data import load_ene2name
 
-warnings.simplefilter('ignore')
-
-TEXT = "時事通信によると、社民党は国会の連立与党政権から離脱すると5月30日の全国幹事長会議で決定・発表した。これは米軍普天間基地の移設問題に関する対処に反対した福島みずほ党首が大臣を罷免（ひめん）されたことに社民党内の反発が大きく、地方組織の大半が連立から離脱するべきであると主張したことによる。読売新聞によると、福島さんは「全国幹事長会議で様々な意見を聞いて、その後常任幹事会を開いて政権からの離脱を決めた。全国の都道府県連の幹事長から『筋を通してよかった』といってもらった。離脱はきわめて残念で大きな決断だが、国民との信頼関係が全てだと考えた。米軍基地を沖縄県名護市（なごし）の辺野古（へのこ）地区に作らないと国民に約束してきた社民党としては、自分達の言葉に責任を持つ政治をやっていかなければいけない。社民党が国民に約束したことは変わっていない。変わったのは内閣の方だ。政権から離脱するので与党というわけには行かないが、法律によっては一緒に作ってきたものがあるから法案審議は是々非々でやっていく」と連立与党からの離脱について説明した。また民主党との選挙協力については、「選挙協力しているところもあるし、民主党として戦っているところも多い。今までも野党で共闘しながらの面もあった。社民党としての選挙を戦っていく」とした。また同じく読売によると、重野安正幹事長も「政権を離脱しても民主党・国民新党との政策合意は実現を求めていく。政権離脱=政策の協議もしないというわけではない。民主党の小沢一郎幹事長から福島さんの罷免後に電話があり、私（重野氏）からも『政権離脱後も選挙協力はしていただきたい』と話した」と語っている。"
+warnings.simplefilter("ignore")
 
 def load_arg():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("input", type=str, help="入力テキスト")
 
-    parser.add_argument("--model_dir", type=str, default="./src/jener/data/model/jener_v1", help="JENERモデルの保存ディレクトリへのパス")
-    parser.add_argument("--ene_def_path", type=str, default="./src/jener/data/ENE_Definition_v9.0.0-with-attributes-20220714.jsonl", help="ENE定義書へのパス")
+    parser.add_argument("--model_dir", type=str, default=None, help="JENERモデルの保存ディレクトリへのパス")
+    parser.add_argument("--ene_def_path", type=str, default=None, help="ENE定義書へのパス")
 
     parser.add_argument("--seq_len", type=int, default=512, help="入力系列長")
     parser.add_argument("--dup_len", type=int, default=32, help="分割重複長")
@@ -100,7 +99,12 @@ def convert_vec_to_ene_ids(vector: torch.Tensor, ene_tags: list) -> set():
 def main():
     args = load_arg()
 
-    cfg, model = load_finetuned_model(args.model_dir)
+    if args.model_dir is None:
+        model_dir = pkg_resources.resource_filename("jener", "data/model/jener_v1")
+    else:
+        model_dir = args.model_dir
+
+    cfg, model = load_finetuned_model(model_dir)
     model.eval()
 
     tokenizer = RoBERTaTokenizer.from_pretrained(cfg.model.bert.name)
@@ -142,7 +146,11 @@ def main():
 
     pred_offsets = iob2offset(outputs["iob2"].tolist(), cfg, model)
 
-    ene2name = load_ene2name(args.ene_def_path)
+    if args.ene_def_path is None:
+        ene_def_path = pkg_resources.resource_filename("jener", "data/ENE_Definition_v9.0.0-with-attributes-20220714.jsonl")
+    else:
+        ene_def_path = args.ene_def_path
+    ene2name = load_ene2name(ene_def_path)
 
     print(f"入力:{args.input}")
     for s, e in sorted(pred_offsets, key=lambda x: x[0]):
