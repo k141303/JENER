@@ -2,7 +2,7 @@ import argparse
 import warnings
 warnings.simplefilter("ignore")
 
-from .jener import JENER
+from jener import JENER
 
 def load_arg():
     parser = argparse.ArgumentParser()
