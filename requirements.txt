@@ -5,4 +5,4 @@ liat_ml_roberta
 datasets>=2.9.0
 tensorboard
 torch_struct
-transformers>=4.22.1
+transformers==4.30.0
