@@ -24,6 +24,6 @@ setup(
         "tqdm>=4.64.1",
         "liat_ml_roberta",
         "torch_struct",
-        "transformers>=4.22.1",
+        "transformers==4.30.0",
     ],
 )
