@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  python:
+    container_name: "jener"
+    build:
+      context: "./docker"
+      dockerfile: "Dockerfile"
+    volumes:
+      - ./:/workspace
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    working_dir: /workspace
+    tty: true

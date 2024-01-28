@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 import torch
 from torch import nn
 
-from utils.data import save_json
+from ..utils.data import save_json
 
 
 class BaseModel(nn.Module):

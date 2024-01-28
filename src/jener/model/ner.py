@@ -2,19 +2,20 @@ from omegaconf import OmegaConf
 
 import torch
 from torch import nn
+from torch.cuda.amp import autocast
+
 from liat_ml_roberta import RoBERTaConfig
 from transformers import RobertaModel
-from model.loss import (
+
+from ..utils.data import save_json
+
+from ..model.loss import (
     MultiLabelCELoss,
     WeightedBCEWithLogitsLoss,
     AsymmetricLossOptimized,
 )
-from model.base import BaseModel
-from model.utils.crf import PatialEERCRF
-
-from utils.data import save_json
-from torch.cuda.amp import autocast
-
+from ..model.base import BaseModel
+from ..model.utils import PatialEERCRF
 
 class NERModel(BaseModel):
     def __init__(self, cfg, num_labels=3, ene_tags=[], ene_count=None, **kwargs):

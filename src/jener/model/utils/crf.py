@@ -4,7 +4,7 @@ from torch_struct import LinearChainCRF
 
 from typing import *
 
-from utils.array import padding
+from ...utils.array import padding
 
 INF = 1e6
 

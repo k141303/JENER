@@ -1,14 +1,14 @@
 import torch
+from torch.cuda.amp import autocast
 
-from model.loss import (
+from ..model.loss import (
     MultiLabelCELoss,
     WeightedBCEWithLogitsLoss,
     AsymmetricLossOptimized,
     TwoWayLoss,
 )
-from model.ner import NERModel
-from model.utils.crf import PatialEERCRF
-from torch.cuda.amp import autocast
+from ..model.ner import NERModel
+from ..model.utils import PatialEERCRF
 
 
 class NERCRFModel(NERModel):

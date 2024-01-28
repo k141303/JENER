@@ -11,9 +11,9 @@ from omegaconf import OmegaConf
 
 from liat_ml_roberta import RoBERTaTokenizer
 
-from model import load_finetuned_model
-from utils.array import slice, padding
-from utils.data import load_ene2name
+from .model import load_finetuned_model
+from .utils.array import slice, padding
+from .utils.data import load_ene2name
 
 warnings.simplefilter('ignore')
 
