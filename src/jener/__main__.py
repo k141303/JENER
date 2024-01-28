@@ -31,7 +31,6 @@ def main():
     )
     predicts = jener(args.input)
 
-    print("入力: {}".format(args.input))
     for d in predicts:
         print(d)
 
