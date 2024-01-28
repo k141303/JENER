@@ -22,6 +22,13 @@ class JENER(object):
     def __init__(self, model_dir:str=None, ene_def_path:str=None, seq_len:int=512, dup_len:int=32, deactive_cuda:bool=False) -> None:
         self.seq_len = seq_len
         self.dup_len = dup_len
+
+        assert self.seq_len > 0, "seq_len must be greater than 0"
+        assert self.dup_len > 0, "dup_len must be greater than 0"     
+        assert self.seq_len <= 512, "seq_len must be less than or equal to 512"
+        assert self.dup_len <= 512, "dup_len must be less than or equal to 512"
+        assert self.seq_len >= self.dup_len, "seq_len must be greater than or equal to dup_len"
+        
         self.deactive_cuda = deactive_cuda
         if model_dir is None:
             model_dir = pkg_resources.resource_filename("jener", "data/model/jener_v1")
@@ -36,6 +43,9 @@ class JENER(object):
         self.ene2name = load_ene2name(ene_def_path)
 
     def __call__(self, text: str) -> list:
+        if text.strip() == "":
+            return []
+
         tokens, offsets = self.tokenize(text)
 
         spans = slice(len(tokens), self.seq_len-2, self.dup_len)

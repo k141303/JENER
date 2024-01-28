@@ -22,6 +22,7 @@ def load_arg():
 
 def main():
     args = load_arg()
+
     jener = JENER(
         model_dir=args.model_dir, 
         ene_def_path=args.ene_def_path, 
