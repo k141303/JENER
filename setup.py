@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fp:
 
 setup(
     name="jener",
-    version="1.1.0",
+    version="1.0.0",
     description="Japanese Extended Named Entity Recognizer",
     long_description=readme,
     long_description_content_type="text/markdown",
