@@ -34,6 +34,9 @@ class JENER(object):
             model_dir = pkg_resources.resource_filename("jener", "data/model/jener_v1")
 
         self.cfg, self.model = load_finetuned_model(model_dir)
+        if not self.deactive_cuda and torch.cuda.is_available():
+            self.model = self.model.cuda()
+
         self.model.eval()
 
         self.tokenizer = RoBERTaTokenizer.from_pretrained(self.cfg.model.bert.name)
@@ -64,7 +67,6 @@ class JENER(object):
             attention_mask = torch.BoolTensor([attention_mask])
 
             if not self.deactive_cuda and torch.cuda.is_available():
-                model = model.cuda()
                 input_ids = input_ids.cuda()
                 attention_mask = attention_mask.cuda()
 
