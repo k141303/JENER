@@ -19,11 +19,11 @@ setup(
     download_url="https://github.com/k141303/JENER",
     include_package_data=True,
     install_requires=[
-        "torch>=2.0.0",
+        "torch<=2.0.0",
+        "transformers<=4.36.0",
         "hydra-core>=1.2.0",
         "tqdm>=4.64.1",
         "liat_ml_roberta",
         "torch_struct",
-        "transformers==4.30.0",
     ],
 )
